@@ -1,0 +1,92 @@
+﻿@model IEnumerable<OtelRezervasyonProject.Models.Log>
+
+@{
+    ViewData["Title"] = "Sistem İşlem Logları";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">
+                <i class="bi bi-journal-text text-primary me-2"></i>Sistem İşlem Logları
+            </h2>
+            <p class="text-muted small mb-0">Sistem üzerinde yapılan tüm kritik işlemlerin kayıtları burada listelenir.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button onclick="window.print()" class="btn btn-outline-secondary rounded-pill px-3 shadow-sm">
+                <i class="bi bi-printer me-1"></i> Yazdır
+            </button>
+            <a asp-action="Index" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Panale Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th class="ps-4 py-3 small fw-bold">TARİH / SAAT</th>
+                        <th class="py-3 small fw-bold">KULLANICI</th>
+                        <th class="py-3 small fw-bold">İŞLEM TİPİ</th>
+                        <th class="py-3 small fw-bold">DETAYLI AÇIKLAMA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in Model)
+
+                    {
+                        <tr>
+                            <td class="ps-4 small text-muted">
+                                @log.Tarih.ToString("dd.MM.yyyy HH:mm:ss")
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar-xs me-2 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                        <i class="bi bi-person-badge small"></i>
+                                    </div>
+                                    <span class="fw-bold">@log.KullaniciAd</span>
+                                </div>
+                            </td>
+                            <td>
+                                @{
+                                    var badgeClass = log.Islem switch
+                                    {
+
+                                        "Yeni Rezervasyon" => "bg-success",
+
+                                        "Oda Ekleme" => "bg-primary",
+
+                                        "Oda Silme" => "bg-danger",
+
+                                        "Admin Girişi" => "bg-dark",
+
+                                        "Müşteri Girişi" => "bg-info",
+
+                                        _ => "bg-secondary"
+
+                                    };
+                                }
+                                <span class="badge @badgeClass rounded-pill px-3 py-2">@log.Islem</span>
+                            </td>
+                            <td class="text-secondary small">
+                                @log.Detay
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(0,0,0,0.02);
+    }
+
+    .rounded-4 {
+        border-radius: 1.25rem !important;
+    }
+</style>

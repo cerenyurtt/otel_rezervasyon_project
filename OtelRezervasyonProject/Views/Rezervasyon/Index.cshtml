@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<OtelRezervasyonProject.Models.Rezervasyon>
+
+@{
+    // Session'dan kullanıcının rol bilgisini alıyoruz
+
+    var rolId = HttpContextAccessor.HttpContext.Session.GetInt32("UserRolId");
+
+    ViewData["Title"] = rolId == 1 ? "Tüm Rezervasyonlar" : "Rezervasyonlarım";
+}
+
+<div class="container mt-4">
+    @* 1. Başarılı İşlem Bildirimi (TempData) *@
+    @if (TempData["RezervasyonMesaj"] != null)
+
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm border-0 mb-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                <div>
+                    <strong>Başarılı!</strong> @TempData["RezervasyonMesaj"]
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @* Sayfa Başlığı *@
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">
+                @if (rolId == 1)
+                {
+                    <text>Tüm Rezervasyonlar (Admin)</text>
+                }
+
+                else
+                {
+                    <text>Rezervasyonlarım</text>
+                }
+            </h2>
+            <p class="text-muted small mb-0">Sistemdeki konaklama kayıtları listeleniyor.</p>
+        </div>
+        @if (rolId != 1)
+
+        {
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                <i class="bi bi-plus-lg me-2"></i>Yeni Rezervasyon
+            </a>
+        }
+    </div>
+
+    @* 2. Rezervasyon Tablosu (Oval ve Gölgeli Tasarım) *@
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        @if (rolId == 1)
+
+                        {
+                            <th class="ps-4 py-3 text-uppercase small fw-bold text-secondary">Müşteri Bilgisi</th>
+                        }
+                        <th class="@(rolId != 1 ? "ps-4" : "") py-3 text-uppercase small fw-bold text-secondary">Oda Detayı</th>
+                        <th class="py-3 text-uppercase small fw-bold text-secondary">Giriş Tarihi</th>
+                        <th class="py-3 text-uppercase small fw-bold text-secondary text-center">Toplam Tutar</th>
+                        <th class="py-3 text-uppercase small fw-bold text-secondary text-center">Durum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+
+                    {
+                        @foreach (var item in Model)
+
+                        {
+                            <tr>
+                                @if (rolId == 1)
+
+                                {
+                                    @* Admin ekranında müşteri avatarı ve bilgisi *@
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm me-3 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div class="fw-bold text-dark">@item.Kullanici?.Ad @item.Kullanici?.Soyad</div>
+                                        </div>
+                                    </td>
+                                }
+                                <td class="@(rolId != 1 ? "ps-4" : "")">
+                                    <div class="fw-bold">Oda #@item.Oda?.OdaNo</div>
+                                    <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3 py-1 small" style="font-size: 0.75rem;">
+                                        @item.Oda?.OdaTipi?.Ad
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold">@item.BaslangicTarihi.ToShortDateString()</div>
+                                    <div class="text-muted small">@item.BitisTarihi.ToShortDateString() bitiş</div>
+                                </td>
+                                <td class="text-center">
+                                    <span class="fw-bold text-primary">@item.ToplamTutar.ToString("N0") TL</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-success rounded-pill px-3 py-2 small shadow-sm">
+                                        <i class="bi bi-check2 me-1"></i>Onaylandı
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                    else
+
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="bi bi-calendar-x display-4 mb-3 d-block"></i>
+                                    <h6>Henüz bir kayıt bulunamadı.</h6>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Tablo satırlarına hafif geçiş efekti */
+    .table tbody tr { transition: all 0.2s; }
+    .table tbody tr:hover { background-color: #fcfcfc; }
+    .rounded-4 { border-radius: 1rem !important; }
+</style>

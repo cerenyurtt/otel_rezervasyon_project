@@ -1,0 +1,88 @@
+﻿@* @model OtelRezervasyonProject.Models.OdaTipi
+
+<div class="container mt-4">
+    <h4>Yeni Oda Tipi Ekle</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" method="post">
+                <div class="form-group mb-3">
+                    <label class="control-label">Oda Tipi Adı</label>
+                    <input asp-for="Ad" class="form-control" placeholder="Örn: Standart, Suit" />
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Açıklama</label>
+                    <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                    <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> *@
+
+@model OtelRezervasyonProject.Models.OdaTipi
+
+@{
+    ViewData["Title"] = "Yeni Oda Tipi";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            @* Geri Dön Butonu *@
+            <div class="mb-4">
+                <a asp-action="Index" class="text-decoration-none text-muted">
+                    <i class="bi bi-arrow-left"></i> Listeye Geri Dön
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary py-3 text-white">
+                    <h4 class="mb-0 fw-bold text-center">Yeni Oda Tipi Tanımla</h4>
+                </div>
+                <div class="card-body p-5 bg-white">
+                    <form asp-action="Create" method="post">
+                        @* Hata Özeti *@
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Ad" class="form-label fw-bold text-secondary">Oda Tipi Adı</label>
+                            <input asp-for="Ad" class="form-control form-control-lg rounded-3 border-2" placeholder="Örn: Suit Oda, Standart..." required />
+                            <span asp-validation-for="Ad" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="Aciklama" class="form-label fw-bold text-secondary">Açıklama</label>
+                            <textarea asp-for="Aciklama" class="form-control rounded-3 border-2" rows="4" placeholder="Oda özelliklerini buraya yazın..."></textarea>
+                            <span asp-validation-for="Aciklama" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+                                <i class="bi bi-save me-2"></i>Oda Tipini Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @* Yardımcı Bilgi *@
+            <div class="text-center mt-4">
+                <p class="text-muted small">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Yeni bir oda tipi eklediğinizde, bu tip "Oda Yönetimi" panelinde seçilebilir hale gelecektir.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

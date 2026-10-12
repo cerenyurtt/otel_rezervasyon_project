@@ -1,0 +1,83 @@
+﻿@model OtelRezervasyonProject.Models.Oda
+
+@{
+    ViewData["Title"] = "Yeni Oda Ekle";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            @* Üst Başlık ve Geri Dönüş *@
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-secondary">Yeni Oda Tanımla</h2>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                    <i class="bi bi-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                @* Kartın Üst Kısmı *@
+                <div class="card-header bg-dark py-3">
+                    <h5 class="mb-0 text-white text-center fw-semibold">Oda Bilgileri Formu</h5>
+                </div>
+
+                <div class="card-body p-5 bg-white">
+                    <form asp-action="Create" method="post">
+                        @* Hata Özeti (ModelState hataları burada görünür) *@
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        @* Oda Numarası *@
+                        <div class="form-group mb-4">
+                            <label asp-for="OdaNo" class="form-label fw-bold text-dark small text-uppercase">Oda Numarası</label>
+                            <input asp-for="OdaNo" class="form-control form-control-lg rounded-3 border-2" placeholder="Örn: 304" required />
+                            <span asp-validation-for="OdaNo" class="text-danger small"></span>
+                        </div>
+
+                        @* Oda Tipi Seçimi *@
+                        <div class="form-group mb-4">
+                            <label asp-for="OdaTipiId" class="form-label fw-bold text-dark small text-uppercase">Oda Kategorisi</label>
+                            <select asp-for="OdaTipiId" class="form-select form-select-lg rounded-3 border-2" asp-items="ViewBag.OdaTipiId">
+                                <option value="">-- Lütfen Tip Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="OdaTipiId" class="text-danger small"></span>
+                        </div>
+
+                        @* Gecelik Fiyat *@
+                        <div class="form-group mb-4">
+                            <label asp-for="GecelikFiyat" class="form-label fw-bold text-dark small text-uppercase">Gecelik Ücret (TL)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-2 rounded-start-3">₺</span>
+                                <input asp-for="GecelikFiyat" class="form-control form-control-lg border-2 rounded-end-3" type="number" step="0.01" placeholder="0.00" required />
+                            </div>
+                            <span asp-validation-for="GecelikFiyat" class="text-danger small"></span>
+                        </div>
+
+                        @* Müsaitlik Durumu (Switch Tasarımı) *@
+                        <div class="form-check form-switch mb-5 p-0 d-flex align-items-center justify-content-between border rounded-3 p-3 bg-light">
+                            <label class="form-check-label fw-bold text-secondary mb-0" asp-for="MusaitMi">Oda Satışa Açılsın mı?</label>
+                            <input class="form-check-input ms-0 mt-0" style="width: 3.5rem; height: 1.75rem;" type="checkbox" asp-for="MusaitMi" checked>
+                        </div>
+
+                        @* Kaydet Butonu *@
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg rounded-pill fw-bold shadow-sm py-3 transition-hover">
+                                <i class="bi bi-cloud-upload me-2"></i> ODAYI SİSTEME KAYDET
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @* Alt Bilgi Notu *@
+            <p class="text-center text-muted mt-4 small">
+                <i class="bi bi-info-circle me-1"></i> Yeni eklenen odalar anında ana sayfada listelenmeye başlar.
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
