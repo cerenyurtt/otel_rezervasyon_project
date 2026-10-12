@@ -9,7 +9,7 @@ namespace OtelRezervasyonProject
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 1. Veritabaný Baðlantýsý (ABDULLAH\SQLEXPRESS için)
+            // 1. Veritabaný Baðlantýsý (localhost\SQLEXPRESS için)
             builder.Services.AddDbContext<OtelDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
