@@ -1,5 +1,49 @@
-bin/
-obj/
+# Visual Studio / .NET .gitignore
+
+# Derleme çıktıları
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio geçici dosyaları
 .vs/
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# VS Code
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Test sonuçları
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+
+# Yerel ayar ve gizli bilgi dosyaları
+.env
+*.env
+appsettings.Development.json
+secrets.json
+
+# İşletim sistemi dosyaları
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.DotSettings.user
